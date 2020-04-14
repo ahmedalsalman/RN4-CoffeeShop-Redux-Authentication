@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { connect } from "react-redux"
+import { signup } from "../../redux/actions"
 // Screen Names
 import { LOGIN } from "../../Navigation/screenNames";
 
@@ -15,6 +17,7 @@ class Signup extends Component {
   };
 
   render() {
+    if (this.props.user) this.props.navigation.replace(SHOP)
     const { navigation } = this.props;
     const { username, password } = this.state;
     return (
@@ -24,21 +27,20 @@ class Signup extends Component {
           style={styles.authTextInput}
           placeholder="Username"
           placeholderTextColor="#A6AEC1"
+          value={username}
+          onChangeText={username => this.setState({ username })}
         />
         <TextInput
           style={styles.authTextInput}
           placeholder="Password"
           placeholderTextColor="#A6AEC1"
           secureTextEntry={true}
+          value={password}
+          onChangeText={password => this.setState({ password })}
         />
         <TouchableOpacity
           style={styles.authButton}
-          onPress={() =>
-            alert(
-              `YOU'RE TRYING TO SIGNUP AS "${username}". 
-          "${password}" is a really stupid password.`
-            )
-          }
+          onPress={() => this.props.signup(this.state)}
         >
           <Text style={styles.authButtonText}>Sign up</Text>
         </TouchableOpacity>
@@ -53,4 +55,8 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+const mapDispatchToProps = dispatch => ({
+  signup: userData => dispatch(signup(userData))
+})
+
+export default connect(null, mapDispatchToProps)(Signup);

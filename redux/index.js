@@ -1,7 +1,7 @@
 import { createStore, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 
-import { getCoffeeShops } from "./actions";
+import { getCoffeeShops, checkForExpiredToken } from "./actions";
 
 import rootReducer from "./reducers";
 
@@ -12,6 +12,7 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 
+store.dispatch(checkForExpiredToken());
 store.dispatch(getCoffeeShops());
 
 export default store;
